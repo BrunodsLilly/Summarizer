@@ -1,0 +1,39 @@
+# Build stage
+FROM golang:1.24.3-alpine AS builder
+
+# Install git for go modules
+RUN apk add --no-cache git
+
+# Set working directory
+WORKDIR /app
+
+# Copy go workspace files
+COPY go.work go.work.sum ./
+
+# Copy all modules
+COPY pkg/ pkg/
+COPY cmd/web/ cmd/web/
+
+# Download dependencies
+RUN go work sync
+
+# Build the web application
+WORKDIR /app/cmd/web
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o web-server .
+
+# Final stage
+FROM alpine:latest
+
+# Install ca-certificates for SSL/TLS
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+
+# Copy the binary from builder stage
+COPY --from=builder /app/cmd/web/web-server .
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the binary
+CMD ["./web-server"]
