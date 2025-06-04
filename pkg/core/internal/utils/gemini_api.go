@@ -61,7 +61,7 @@ func GenerateWithYTVideo(url string) (string, error) {
 
 	contents := []*genai.Content{
 		{Parts: []*genai.Part{
-			{Text: "Write a short summary of the video. Be as information dense as possible. Be thorough. Produce an overall summary, then clearly identify video sections and summarize them."},
+			{Text: "Write a short summary of the video. Be as information dense as possible. Be thorough. Produce an overall summary, then clearly identify video sections and summarize them. Finally, add a thoughtful critique of the video."},
 			{FileData: &genai.FileData{
 				FileURI:  url,
 				MIMEType: "video/mp4",
