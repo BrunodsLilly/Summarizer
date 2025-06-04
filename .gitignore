@@ -1,0 +1,45 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of `go run`
+*.run
+
+# Local build artifacts
+build/
+bin/
+dist/
+
+# Vendor dependencies (if you use vendoring)
+vendor/
+
+# IDE/editor files
+*.swp
+*.swo
+*.tmp
+*.log
+
+# VSCode
+.vscode/
+
+# JetBrains
+.idea/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Go coverage profiles
+*.coverprofile
+
+# Generated protobuf/grpc files (optional, depends on your project)
+*.pb.go
+
