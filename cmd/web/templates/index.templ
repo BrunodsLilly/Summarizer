@@ -1,0 +1,31 @@
+package templates
+
+templ Index() {
+	@Layout("Summarizer") {
+		<h1>YouTube Video Summarizer</h1>
+		<div class="card">
+			<h2>Upload and Summarize</h2>
+			<form hx-post="/summarize" hx-target="#result" hx-indicator="#loading">
+				<div>
+					<label for="url">Enter YouTube url to summarize:</label>
+					<br/>
+					<input id="url" name="url" placeholder="Enter your url here..."/>
+				</div>
+				<br/>
+				<button type="submit" id="submit-btn">Summarize</button>
+				<div id="loading" class="htmx-indicator">Processing...</div>
+			</form>
+		</div>
+		<div id="result"></div>
+	}
+}
+
+templ SummaryResult(summary string) {
+	<div class="card">
+		<h3>Summary</h3>
+		<div class="markdown-content">
+			@templ.Raw(summary)
+		</div>
+		<button hx-get="/" hx-target="body" hx-push-url="true">New Summary</button>
+	</div>
+}
