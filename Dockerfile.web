@@ -7,10 +7,10 @@ RUN apk add --no-cache git
 # Set working directory
 WORKDIR /app
 
-# Copy go workspace files
-COPY go.work go.work.sum ./
+# Copy web-specific workspace file
+COPY go.work.web ./go.work
 
-# Copy all modules
+# Copy all needed modules
 COPY pkg/ pkg/
 COPY cmd/web/ cmd/web/
 
@@ -26,7 +26,6 @@ FROM alpine:latest
 
 # Install ca-certificates for SSL/TLS
 RUN apk --no-cache add ca-certificates
-
 WORKDIR /root/
 
 # Copy the binary from builder stage
