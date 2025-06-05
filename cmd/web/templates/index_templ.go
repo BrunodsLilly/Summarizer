@@ -55,7 +55,7 @@ func Index() templ.Component {
 	})
 }
 
-func SummaryResult(summary string) templ.Component {
+func TestSummaryPage(summary string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -76,7 +76,58 @@ func SummaryResult(summary string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"bg-gray-800 border border-gray-700 rounded-lg shadow-xl mb-8\"><!-- Reader Controls --><div class=\"reader-controls rounded-t-lg p-4 border-b border-gray-700\"><div class=\"flex items-center justify-between mb-3\"><div class=\"flex items-center space-x-4\"><h3 class=\"text-xl font-semibold text-gray-100\">Summary Reader</h3><div class=\"flex items-center space-x-2\"><button id=\"bionic-toggle\" onclick=\"toggleBionic()\" class=\"bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded transition-colors duration-200\">Enable Bionic Reading</button> <button onclick=\"adjustFontSize(1)\" class=\"bg-gray-600 hover:bg-gray-700 text-white text-sm px-2 py-1 rounded\">A+</button> <button onclick=\"adjustFontSize(-1)\" class=\"bg-gray-600 hover:bg-gray-700 text-white text-sm px-2 py-1 rounded\">A-</button></div></div><button hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2\">New Summary</button></div><!-- Reading Progress --><div class=\"space-y-2\"><div class=\"flex items-center justify-between reading-stats\"><div class=\"flex items-center space-x-4\"><span id=\"word-count\">0 words</span> <span id=\"reading-time\">~0 min read</span> <span id=\"progress-percent\">0% complete</span></div><span id=\"time-remaining\">~0 min remaining</span></div><div class=\"progress-bar\"><div id=\"progress-fill\" class=\"progress-fill\" style=\"width: 0%\"></div></div></div></div><!-- Reader Content --><div class=\"p-8\"><div id=\"reader-content\" class=\"reader-content\">")
+		templ_7745c5c3_Var4 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold text-gray-100 mb-2\">Test Summary Page</h1><p class=\"text-gray-400\">Sample content for testing reader features</p></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = SummaryResult(summary).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = Layout("Test Summary - Summarizer").Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+func SummaryResult(summary string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var5 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var5 == nil {
+			templ_7745c5c3_Var5 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"bg-gray-800 border border-gray-700 rounded-lg shadow-xl mb-8\"><!-- Reader Controls --><div class=\"reader-controls rounded-t-lg p-4 border-b border-gray-700\"><div class=\"flex items-center justify-between mb-3\"><div class=\"flex items-center space-x-4\"><h3 class=\"text-xl font-semibold text-gray-100\">Summary Reader</h3><div class=\"flex items-center space-x-2\"><button id=\"bionic-toggle\" onclick=\"toggleBionic()\" class=\"bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded transition-colors duration-200\">Enable Bionic Reading</button> <button onclick=\"adjustFontSize(1)\" class=\"bg-gray-600 hover:bg-gray-700 text-white text-sm px-2 py-1 rounded\">A+</button> <button onclick=\"adjustFontSize(-1)\" class=\"bg-gray-600 hover:bg-gray-700 text-white text-sm px-2 py-1 rounded\">A-</button></div></div><button hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2\">New Summary</button></div><!-- Reading Progress --><div class=\"space-y-2\"><div class=\"flex items-center justify-between reading-stats\"><div class=\"flex items-center space-x-4\"><span id=\"word-count\">0 words</span> <span id=\"reading-time\">~0 min read</span> <span id=\"progress-percent\">0% complete</span></div><span id=\"time-remaining\">~0 min remaining</span></div><div class=\"progress-bar\"><div id=\"progress-fill\" class=\"progress-fill\" style=\"width: 0%\"></div></div></div></div><!-- Reader Content --><div class=\"p-8\"><div id=\"reader-content\" class=\"reader-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -84,7 +135,7 @@ func SummaryResult(summary string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div></div><script>\n\t\t(function() {\n\t\t\tconsole.log('Initializing reading progress for new summary...');\n\t\t\t\n\t\t\tlet totalWords = 0;\n\t\t\tlet readingSpeed = 200; // words per minute\n\t\t\t\n\t\t\t// Initialize reading progress\n\t\t\tfunction initializeReadingProgress() {\n\t\t\t\tconst content = document.getElementById('reader-content');\n\t\t\t\tif (!content) {\n\t\t\t\t\tconsole.log('Reader content not found');\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t// Calculate word count\n\t\t\t\tconst text = content.textContent || content.innerText;\n\t\t\t\tconst words = text.trim().split(/\\s+/).filter(word => word.length > 0);\n\t\t\t\ttotalWords = words.length;\n\t\t\t\t\n\t\t\t\tconsole.log('Reading progress initialized:', {\n\t\t\t\t\tcontentFound: !!content,\n\t\t\t\t\ttextLength: text.length,\n\t\t\t\t\ttotalWords: totalWords\n\t\t\t\t});\n\t\t\t\t\n\t\t\t\tif (totalWords === 0) {\n\t\t\t\t\tconsole.log('No words found in content');\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t// Calculate reading time\n\t\t\t\tconst totalMinutes = Math.max(1, Math.ceil(totalWords / readingSpeed));\n\t\t\t\t\n\t\t\t\t// Update UI elements\n\t\t\t\tconst wordCountEl = document.getElementById('word-count');\n\t\t\t\tconst readingTimeEl = document.getElementById('reading-time');\n\t\t\t\tconst timeRemainingEl = document.getElementById('time-remaining');\n\t\t\t\t\n\t\t\t\tif (wordCountEl) wordCountEl.textContent = `${totalWords.toLocaleString()} words`;\n\t\t\t\tif (readingTimeEl) readingTimeEl.textContent = `~${totalMinutes} min read`;\n\t\t\t\tif (timeRemainingEl) timeRemainingEl.textContent = `~${totalMinutes} min remaining`;\n\t\t\t\t\n\t\t\t\t// Set initial font size\n\t\t\t\tcontent.style.fontSize = (window.currentFontSize || 18) + 'px';\n\t\t\t\t\n\t\t\t\t// Setup scroll tracking\n\t\t\t\tsetupScrollTracking();\n\t\t\t}\n\t\t\t\n\t\t\tfunction setupScrollTracking() {\n\t\t\t\tconst content = document.getElementById('reader-content');\n\t\t\t\tconst progressFill = document.getElementById('progress-fill');\n\t\t\t\tconst progressPercent = document.getElementById('progress-percent');\n\t\t\t\tconst timeRemaining = document.getElementById('time-remaining');\n\t\t\t\t\n\t\t\t\tif (!content || !progressFill) {\n\t\t\t\t\tconsole.log('Missing elements for scroll tracking');\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tfunction updateProgress() {\n\t\t\t\t\tconst windowHeight = window.innerHeight;\n\t\t\t\t\tconst scrollTop = window.pageYOffset || document.documentElement.scrollTop;\n\t\t\t\t\t\n\t\t\t\t\t// Get content position relative to document\n\t\t\t\t\tconst contentRect = content.getBoundingClientRect();\n\t\t\t\t\tconst contentTop = scrollTop + contentRect.top;\n\t\t\t\t\tconst contentHeight = content.offsetHeight;\n\t\t\t\t\tconst contentBottom = contentTop + contentHeight;\n\t\t\t\t\t\n\t\t\t\t\t// Calculate progress based on how much content has been scrolled past\n\t\t\t\t\tlet progress = 0;\n\t\t\t\t\t\n\t\t\t\t\tif (scrollTop + windowHeight >= contentTop) {\n\t\t\t\t\t\t// User has reached the content area\n\t\t\t\t\t\tconst viewportBottom = scrollTop + windowHeight;\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (viewportBottom >= contentBottom) {\n\t\t\t\t\t\t\t// User has scrolled past the entire content\n\t\t\t\t\t\t\tprogress = 100;\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t// Calculate partial progress\n\t\t\t\t\t\t\tconst visibleContentHeight = Math.max(0, viewportBottom - contentTop);\n\t\t\t\t\t\t\tprogress = Math.min(100, (visibleContentHeight / contentHeight) * 100);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t// Update UI elements\n\t\t\t\t\tprogressFill.style.width = `${progress}%`;\n\t\t\t\t\tif (progressPercent) progressPercent.textContent = `${Math.round(progress)}% complete`;\n\t\t\t\t\t\n\t\t\t\t\t// Update time remaining\n\t\t\t\t\tconst remainingWords = Math.ceil(totalWords * (100 - progress) / 100);\n\t\t\t\t\tconst remainingMinutes = Math.max(0, Math.ceil(remainingWords / readingSpeed));\n\t\t\t\t\tif (timeRemaining) {\n\t\t\t\t\t\ttimeRemaining.textContent = remainingMinutes > 0 ? \n\t\t\t\t\t\t\t`~${remainingMinutes} min remaining` : 'Complete!';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t// Throttled scroll listener\n\t\t\t\tlet ticking = false;\n\t\t\t\tfunction onScroll() {\n\t\t\t\t\tif (!ticking) {\n\t\t\t\t\t\trequestAnimationFrame(() => {\n\t\t\t\t\t\t\tupdateProgress();\n\t\t\t\t\t\t\tticking = false;\n\t\t\t\t\t\t});\n\t\t\t\t\t\tticking = true;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\twindow.addEventListener('scroll', onScroll);\n\t\t\t\twindow.addEventListener('resize', updateProgress);\n\t\t\t\tupdateProgress(); // Initial calculation\n\t\t\t\t\n\t\t\t\tconsole.log('Scroll tracking setup complete');\n\t\t\t}\n\t\t\t\n\t\t\t// Initialize immediately since content is already loaded\n\t\t\tinitializeReadingProgress();\n\t\t})();\n\t</script><script>\n\t\t// Global reader functions (available to all readers)\n\t\tlet currentFontSize = 18;\n\t\t\n\t\tfunction toggleBionic() {\n\t\t\tconst content = document.getElementById('reader-content');\n\t\t\tconst button = document.getElementById('bionic-toggle');\n\t\t\tlet bionicEnabled = button.textContent.includes('Disable');\n\t\t\t\n\t\t\tif (!bionicEnabled) {\n\t\t\t\tapplyBionicText(content);\n\t\t\t\tbutton.textContent = 'Disable Bionic Reading';\n\t\t\t\tbutton.classList.remove('bg-blue-600', 'hover:bg-blue-700');\n\t\t\t\tbutton.classList.add('bg-green-600', 'hover:bg-green-700');\n\t\t\t} else {\n\t\t\t\tremoveBionicText(content);\n\t\t\t\tbutton.textContent = 'Enable Bionic Reading';\n\t\t\t\tbutton.classList.remove('bg-green-600', 'hover:bg-green-700');\n\t\t\t\tbutton.classList.add('bg-blue-600', 'hover:bg-blue-700');\n\t\t\t}\n\t\t}\n\t\t\n\t\tfunction applyBionicText(element) {\n\t\t\tconst walker = document.createTreeWalker(\n\t\t\t\telement,\n\t\t\t\tNodeFilter.SHOW_TEXT,\n\t\t\t\tnull,\n\t\t\t\tfalse\n\t\t\t);\n\t\t\t\n\t\t\tconst textNodes = [];\n\t\t\tlet node;\n\t\t\twhile (node = walker.nextNode()) {\n\t\t\t\tif (node.parentElement.tagName !== 'CODE' && node.parentElement.tagName !== 'PRE') {\n\t\t\t\t\ttextNodes.push(node);\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\ttextNodes.forEach(textNode => {\n\t\t\t\tconst text = textNode.textContent;\n\t\t\t\tconst words = text.split(/(\\s+)/);\n\t\t\t\tconst fragment = document.createDocumentFragment();\n\t\t\t\t\n\t\t\t\twords.forEach(word => {\n\t\t\t\t\tif (word.trim()) {\n\t\t\t\t\t\tconst span = document.createElement('span');\n\t\t\t\t\t\tspan.className = 'bionic-word';\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst cleanWord = word.replace(/[^\\w]/g, '');\n\t\t\t\t\t\tif (cleanWord.length > 1) {\n\t\t\t\t\t\t\tconst bionicLength = Math.max(1, Math.ceil(cleanWord.length * 0.5));\n\t\t\t\t\t\t\tconst bionicPart = word.substring(0, bionicLength);\n\t\t\t\t\t\t\tconst normalPart = word.substring(bionicLength);\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tspan.innerHTML = `<span class=\"bionic\">${bionicPart}</span><span class=\"non-bionic\">${normalPart}</span>`;\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\tspan.innerHTML = `<span class=\"non-bionic\">${word}</span>`;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tfragment.appendChild(span);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tfragment.appendChild(document.createTextNode(word));\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t\t\n\t\t\t\ttextNode.parentNode.replaceChild(fragment, textNode);\n\t\t\t});\n\t\t}\n\t\t\n\t\tfunction removeBionicText(element) {\n\t\t\tconst bionicWords = element.querySelectorAll('.bionic-word');\n\t\t\tbionicWords.forEach(word => {\n\t\t\t\tconst text = word.textContent;\n\t\t\t\tword.parentNode.replaceChild(document.createTextNode(text), word);\n\t\t\t});\n\t\t}\n\t\t\n\t\tfunction adjustFontSize(delta) {\n\t\t\tcurrentFontSize += delta * 2;\n\t\t\tcurrentFontSize = Math.max(12, Math.min(28, currentFontSize));\n\t\t\tconst content = document.getElementById('reader-content');\n\t\t\tif (content) {\n\t\t\t\tcontent.style.fontSize = currentFontSize + 'px';\n\t\t\t}\n\t\t}\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div></div><script>\n\t\t// Initialize reading progress when content loads\n\t\t(function() {\n\t\t\t// Initialize immediately since content is already loaded\n\t\t\tif (typeof initializeReadingProgress === 'function') {\n\t\t\t\tinitializeReadingProgress();\n\t\t\t} else {\n\t\t\t\tconsole.warn('initializeReadingProgress function not found');\n\t\t\t}\n\t\t})();\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
