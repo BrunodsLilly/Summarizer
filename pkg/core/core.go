@@ -71,3 +71,8 @@ func SummarizeURL(url string) (string, error) {
 	}
 	return resp, nil
 }
+
+// GetModelInfo returns information about the current model being used
+func GetModelInfo() (string, string) {
+	return gemini_api.GetModelName(), gemini_api.GetAPIVersion()
+}

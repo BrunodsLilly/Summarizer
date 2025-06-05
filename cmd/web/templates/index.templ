@@ -1,10 +1,22 @@
 package templates
 
-templ Index() {
+templ Index(modelName, apiVersion string) {
 	@Layout("Summarizer") {
 		<div class="text-center mb-8">
 			<h1 class="text-4xl font-bold text-gray-900 mb-2">YouTube Video Summarizer</h1>
-			<p class="text-gray-600">Get AI-powered summaries of YouTube videos instantly</p>
+			<p class="text-gray-600 mb-4">Get AI-powered summaries of YouTube videos instantly</p>
+			<div class="inline-flex items-center space-x-4 text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded-full">
+				<div class="flex items-center space-x-2">
+					<div class="w-2 h-2 bg-green-500 rounded-full"></div>
+					<span class="font-medium">Model:</span>
+					<span class="font-mono">{ modelName }</span>
+				</div>
+				<div class="text-gray-300">|</div>
+				<div class="flex items-center space-x-2">
+					<span class="font-medium">API:</span>
+					<span class="font-mono">{ apiVersion }</span>
+				</div>
+			</div>
 		</div>
 		<div class="bg-white rounded-lg shadow-md p-6 mb-8">
 			<h2 class="text-2xl font-semibold text-gray-800 mb-4">Upload and Summarize</h2>

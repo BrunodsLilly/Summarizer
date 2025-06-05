@@ -28,7 +28,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := templates.Index()
+	modelName, apiVersion := core.GetModelInfo()
+	component := templates.Index(modelName, apiVersion)
 	err := component.Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Failed to render template", http.StatusInternalServerError)
