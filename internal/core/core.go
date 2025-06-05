@@ -12,10 +12,8 @@ const (
 	// API version
 	APIVersion = "v1beta"
 	// Model name
-	// ModelName = "gemini-2.0-flash-001"
-    //ModelName = "gemini-2.5-pro-preview-05-06"
-    //ModelName = "gemini-2.5-flash-preview-05-20"
-    ModelName = "gemini-2.0-flash"
+    // ModelName = "gemini-2.5-pro-preview-05-06"
+	ModelName = "gemini-2.0-flash-001"
 )
 
 func main() {

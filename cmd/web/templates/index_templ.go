@@ -41,7 +41,7 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<h1>YouTube Video Summarizer</h1><div class=\"card\"><h2>Upload and Summarize</h2><form hx-post=\"/summarize\" hx-target=\"#result\" hx-indicator=\"#loading\"><div><label for=\"url\">Enter YouTube url to summarize:</label><br><input id=\"url\" name=\"url\" placeholder=\"Enter your url here...\"></div><br><button type=\"submit\" id=\"submit-btn\">Summarize</button><div id=\"loading\" class=\"htmx-indicator\">Processing...</div></form></div><div id=\"result\"></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">YouTube Video Summarizer</h1><p class=\"text-gray-600\">Get AI-powered summaries of YouTube videos instantly</p></div><div class=\"bg-white rounded-lg shadow-md p-6 mb-8\"><h2 class=\"text-2xl font-semibold text-gray-800 mb-4\">Upload and Summarize</h2><form hx-post=\"/summarize\" hx-target=\"#result\" hx-indicator=\"#loading\" class=\"space-y-4\"><div><label for=\"url\" class=\"block text-sm font-medium text-gray-700 mb-2\">Enter YouTube URL to summarize:</label> <input id=\"url\" name=\"url\" placeholder=\"https://www.youtube.com/watch?v=...\" class=\"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500\"></div><div class=\"flex items-center space-x-4\"><button type=\"submit\" id=\"submit-btn\" class=\"bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2\">Summarize</button><div id=\"loading\" class=\"htmx-indicator text-blue-600 font-medium\"><div class=\"flex items-center space-x-2\"><div class=\"animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full\"></div><span>Processing...</span></div></div></div></form></div><div id=\"result\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -76,7 +76,7 @@ func SummaryResult(summary string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"card\"><h3>Summary</h3><div class=\"markdown-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"bg-white rounded-lg shadow-md p-6 mb-8\"><div class=\"flex items-center justify-between mb-4\"><h3 class=\"text-2xl font-semibold text-gray-800\">Summary</h3><button hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2\">New Summary</button></div><div class=\"markdown-content prose prose-gray max-w-none\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -84,7 +84,7 @@ func SummaryResult(summary string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><button hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\">New Summary</button></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
