@@ -72,6 +72,17 @@ func SummarizeURL(url string) (string, error) {
 	return resp, nil
 }
 
+// SummarizeURLWithModel allows specifying a custom model
+func SummarizeURLWithModel(url, modelName string) (string, error) {
+	apiVersion := gemini_api.GetAPIVersion()
+	resp, err := gemini_api.GenerateWithYTVideoAndModel(url, modelName, apiVersion)
+	if err != nil {
+		fmt.Println("Error generating summary:", err)
+		return "", err
+	}
+	return resp, nil
+}
+
 // GetModelInfo returns information about the current model being used
 func GetModelInfo() (string, string) {
 	return gemini_api.GetModelName(), gemini_api.GetAPIVersion()

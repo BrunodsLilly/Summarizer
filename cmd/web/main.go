@@ -28,8 +28,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	modelName, apiVersion := core.GetModelInfo()
-	component := templates.Index(modelName, apiVersion)
+	component := templates.Index()
 	err := component.Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Failed to render template", http.StatusInternalServerError)
@@ -56,8 +55,13 @@ func summarizeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Simple summarization logic (placeholder)
-	summary := generateSummary(url)
+	selectedModel := r.FormValue("model")
+	if strings.TrimSpace(selectedModel) == "" {
+		selectedModel = "gemini-2.5-pro-preview-05-06" // Default model
+	}
+
+	// Generate summary with selected model
+	summary := generateSummaryWithModel(url, selectedModel)
 
 	component := templates.SummaryResult(summary)
 	err = component.Render(r.Context(), w)
@@ -74,6 +78,15 @@ func generateSummary(url string) string {
 		log.Printf("Error summarizing URL: %v", err)
 		// return "Error generating summary"
 		return fmt.Sprintf("Error generating summary for URL: %s\n%s", url, err.Error())
+	}
+	return markdownToHTML(res)
+}
+
+func generateSummaryWithModel(url, modelName string) string {
+	res, err := core.SummarizeURLWithModel(url, modelName)
+	if err != nil {
+		log.Printf("Error summarizing URL with model %s: %v", modelName, err)
+		return fmt.Sprintf("Error generating summary for URL: %s using model %s\n%s", url, modelName, err.Error())
 	}
 	return markdownToHTML(res)
 }

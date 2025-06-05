@@ -8,7 +8,7 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Index(modelName, apiVersion string) templ.Component {
+func Index() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -41,33 +41,7 @@ func Index(modelName, apiVersion string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">YouTube Video Summarizer</h1><p class=\"text-gray-600 mb-4\">Get AI-powered summaries of YouTube videos instantly</p><div class=\"inline-flex items-center space-x-4 text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded-full\"><div class=\"flex items-center space-x-2\"><div class=\"w-2 h-2 bg-green-500 rounded-full\"></div><span class=\"font-medium\">Model:</span> <span class=\"font-mono\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(modelName)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/index.templ`, Line: 12, Col: 40}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></div><div class=\"text-gray-300\">|</div><div class=\"flex items-center space-x-2\"><span class=\"font-medium\">API:</span> <span class=\"font-mono\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(apiVersion)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/index.templ`, Line: 17, Col: 41}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></div></div></div><div class=\"bg-white rounded-lg shadow-md p-6 mb-8\"><h2 class=\"text-2xl font-semibold text-gray-800 mb-4\">Upload and Summarize</h2><form hx-post=\"/summarize\" hx-target=\"#result\" hx-indicator=\"#loading\" class=\"space-y-4\"><div><label for=\"url\" class=\"block text-sm font-medium text-gray-700 mb-2\">Enter YouTube URL to summarize:</label> <input id=\"url\" name=\"url\" placeholder=\"https://www.youtube.com/watch?v=...\" class=\"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500\"></div><div class=\"flex items-center space-x-4\"><button type=\"submit\" id=\"submit-btn\" class=\"bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2\">Summarize</button><div id=\"loading\" class=\"htmx-indicator text-blue-600 font-medium\"><div class=\"flex items-center space-x-2\"><div class=\"animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full\"></div><span>Processing...</span></div></div></div></form></div><div id=\"result\"></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">YouTube Video Summarizer</h1><p class=\"text-gray-600\">Get AI-powered summaries of YouTube videos instantly</p></div><div class=\"bg-white rounded-lg shadow-md p-6 mb-8\"><h2 class=\"text-2xl font-semibold text-gray-800 mb-4\">Upload and Summarize</h2><form hx-post=\"/summarize\" hx-target=\"#result\" hx-indicator=\"#loading\" class=\"space-y-4\"><div><label for=\"url\" class=\"block text-sm font-medium text-gray-700 mb-2\">Enter YouTube URL to summarize:</label> <input id=\"url\" name=\"url\" placeholder=\"https://www.youtube.com/watch?v=...\" class=\"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500\"></div><div><label for=\"model\" class=\"block text-sm font-medium text-gray-700 mb-2\">Select AI Model:</label> <select id=\"model\" name=\"model\" class=\"w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white\"><option value=\"gemini-2.5-pro-preview-05-06\">Gemini 2.5 Pro Preview (Default)</option> <option value=\"gemini-2.5-flash-preview-05-20\">Gemini 2.5 Flash Preview</option> <option value=\"gemini-2.0-flash\">Gemini 2.0 Flash</option></select></div><div class=\"flex items-center space-x-4\"><button type=\"submit\" id=\"submit-btn\" class=\"bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2\">Summarize</button><div id=\"loading\" class=\"htmx-indicator text-blue-600 font-medium\"><div class=\"flex items-center space-x-2\"><div class=\"animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full\"></div><span>Processing...</span></div></div></div></form></div><div id=\"result\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,12 +71,12 @@ func SummaryResult(summary string) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var5 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var5 == nil {
-			templ_7745c5c3_Var5 = templ.NopComponent
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"bg-white rounded-lg shadow-md p-6 mb-8\"><div class=\"flex items-center justify-between mb-4\"><h3 class=\"text-2xl font-semibold text-gray-800\">Summary</h3><button hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2\">New Summary</button></div><div class=\"markdown-content prose prose-gray max-w-none\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"bg-white rounded-lg shadow-md p-6 mb-8\"><div class=\"flex items-center justify-between mb-4\"><h3 class=\"text-2xl font-semibold text-gray-800\">Summary</h3><button hx-get=\"/\" hx-target=\"body\" hx-push-url=\"true\" class=\"bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2\">New Summary</button></div><div class=\"markdown-content prose prose-gray max-w-none\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -110,7 +84,7 @@ func SummaryResult(summary string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -50,6 +50,11 @@ func GetAPIVersion() string {
 func GenerateWithYTVideo(url string) (string, error) {
 	modelName := GetModelName()
 	apiVersion := GetAPIVersion()
+	return GenerateWithYTVideoAndModel(url, modelName, apiVersion)
+}
+
+// GenerateWithYTVideoAndModel allows specifying a custom model
+func GenerateWithYTVideoAndModel(url, modelName, apiVersion string) (string, error) {
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, &genai.ClientConfig{
