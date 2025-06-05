@@ -74,24 +74,42 @@ function setupScrollTracking(totalWords, readingSpeed) {
      * Update progress based on current scroll position
      */
     function updateProgress() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
+        // Use multiple methods to get scroll position for better mobile compatibility
+        const scrollTop = Math.max(
+            window.pageYOffset || 0,
+            document.documentElement.scrollTop || 0,
+            document.body.scrollTop || 0
+        );
+        
+        // Get viewport height - use visualViewport for mobile if available
+        const windowHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        
+        // Get document height with fallbacks
+        const documentHeight = Math.max(
+            document.documentElement.scrollHeight || 0,
+            document.body.scrollHeight || 0,
+            document.documentElement.offsetHeight || 0,
+            document.body.offsetHeight || 0
+        );
         
         // Simple document-based progress calculation
         const maxScroll = Math.max(0, documentHeight - windowHeight);
         let progress = 0;
         
         if (maxScroll > 0) {
-            progress = Math.min(100, (scrollTop / maxScroll) * 100);
+            progress = Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100));
         } else {
             // Document fits in viewport
             progress = 100;
         }
         
         // Update UI elements
-        progressFill.style.width = `${progress}%`;
-        if (progressPercent) progressPercent.textContent = `${Math.round(progress)}% complete`;
+        if (progressFill) {
+            progressFill.style.width = `${progress}%`;
+        }
+        if (progressPercent) {
+            progressPercent.textContent = `${Math.round(progress)}% complete`;
+        }
         
         // Update time remaining
         const remainingWords = Math.ceil(totalWords * (100 - progress) / 100);
@@ -114,11 +132,26 @@ function setupScrollTracking(totalWords, readingSpeed) {
         }
     }
     
-    // Add event listeners
-    window.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', updateProgress);
+    // Add event listeners with passive option for better mobile performance
+    const scrollOptions = { passive: true };
+    window.addEventListener('scroll', onScroll, scrollOptions);
+    window.addEventListener('resize', updateProgress, scrollOptions);
     
-    // Initial calculation
+    // Listen for orientation changes on mobile
+    if (window.orientation !== undefined) {
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateProgress, 100); // Delay to let layout settle
+        });
+    }
+    
+    // Listen for visual viewport changes (mobile keyboard, etc.)
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', updateProgress);
+        window.visualViewport.addEventListener('scroll', onScroll);
+    }
+    
+    // Initial calculation with delay to ensure layout is complete
+    setTimeout(updateProgress, 100);
     updateProgress();
     
     console.log('Scroll tracking setup complete');
