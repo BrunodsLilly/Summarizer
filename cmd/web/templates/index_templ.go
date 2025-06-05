@@ -135,7 +135,7 @@ func SummaryResult(summary string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div></div><script>\n\t\t// Reading progress will auto-initialize from the external JS file\n\t\tconsole.log('SummaryResult template loaded');\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div></div><script>\n\t\t// Reading progress will auto-initialize from the external JS file\n        window.initializeReadingProgress()\n\t\tconsole.log('SummaryResult template loaded');\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
