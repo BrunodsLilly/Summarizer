@@ -71,7 +71,8 @@ func generateSummary(url string) string {
 	res, err := core.SummarizeURL(url)
 	if err != nil {
 		log.Printf("Error summarizing URL: %v", err)
-		return "Error generating summary"
+		// return "Error generating summary"
+		return fmt.Sprintf("Error generating summary for URL: %s\n%s", url, err.Error())
 	}
 	return markdownToHTML(res)
 }
