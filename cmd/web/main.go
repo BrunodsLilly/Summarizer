@@ -89,10 +89,16 @@ func main() {
 	http.HandleFunc("/summarize", summarizeHandler)
 	http.HandleFunc("/test-summary", testSummaryHandler)
 
-	fmt.Println("Server starting on http://localhost:8080")
+	// Get port from environment variable (for Cloud Run) or default to 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	fmt.Printf("Server starting on port %s\n", port)
 	fmt.Printf("Static files served from: %s\n", staticDir)
-	fmt.Println("Test summary available at http://localhost:8080/test-summary")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Printf("Test summary available at http://localhost:%s/test-summary\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
