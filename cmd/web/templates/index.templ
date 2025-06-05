@@ -3,27 +3,27 @@ package templates
 templ Index() {
 	@Layout("Summarizer") {
 		<div class="text-center mb-8">
-			<h1 class="text-4xl font-bold text-gray-900 mb-2">YouTube Video Summarizer</h1>
-			<p class="text-gray-600">Get AI-powered summaries of YouTube videos instantly</p>
+			<h1 class="text-4xl font-bold text-gray-100 mb-2">YouTube Video Summarizer</h1>
+			<p class="text-gray-400">Get AI-powered summaries of YouTube videos instantly</p>
 		</div>
-		<div class="bg-white rounded-lg shadow-md p-6 mb-8">
-			<h2 class="text-2xl font-semibold text-gray-800 mb-4">Upload and Summarize</h2>
+		<div class="bg-gray-800 border border-gray-700 rounded-lg shadow-xl p-6 mb-8">
+			<h2 class="text-2xl font-semibold text-gray-100 mb-4">Upload and Summarize</h2>
 			<form hx-post="/summarize" hx-target="#result" hx-indicator="#loading" class="space-y-4">
 				<div>
-					<label for="url" class="block text-sm font-medium text-gray-700 mb-2">Enter YouTube URL to summarize:</label>
+					<label for="url" class="block text-sm font-medium text-gray-300 mb-2">Enter YouTube URL to summarize:</label>
 					<input 
 						id="url" 
 						name="url" 
 						placeholder="https://www.youtube.com/watch?v=..." 
-						class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+						class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
 					/>
 				</div>
 				<div>
-					<label for="model" class="block text-sm font-medium text-gray-700 mb-2">Select AI Model:</label>
+					<label for="model" class="block text-sm font-medium text-gray-300 mb-2">Select AI Model:</label>
 					<select 
 						id="model" 
 						name="model" 
-						class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+						class="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 					>
 						<option value="gemini-2.5-pro-preview-05-06">Gemini 2.5 Pro Preview (Default)</option>
 						<option value="gemini-2.5-flash-preview-05-20">Gemini 2.5 Flash Preview</option>
@@ -38,9 +38,9 @@ templ Index() {
 					>
 						Summarize
 					</button>
-					<div id="loading" class="htmx-indicator text-blue-600 font-medium">
+					<div id="loading" class="htmx-indicator text-blue-400 font-medium">
 						<div class="flex items-center space-x-2">
-							<div class="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+							<div class="animate-spin h-4 w-4 border-2 border-blue-400 border-t-transparent rounded-full"></div>
 							<span>Processing...</span>
 						</div>
 					</div>
@@ -52,20 +52,139 @@ templ Index() {
 }
 
 templ SummaryResult(summary string) {
-	<div class="bg-white rounded-lg shadow-md p-6 mb-8">
-		<div class="flex items-center justify-between mb-4">
-			<h3 class="text-2xl font-semibold text-gray-800">Summary</h3>
-			<button 
-				hx-get="/" 
-				hx-target="body" 
-				hx-push-url="true"
-				class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-			>
-				New Summary
-			</button>
+	<div class="bg-gray-800 border border-gray-700 rounded-lg shadow-xl mb-8">
+		<!-- Reader Controls -->
+		<div class="reader-controls rounded-t-lg p-4 border-b border-gray-700">
+			<div class="flex items-center justify-between">
+				<div class="flex items-center space-x-4">
+					<h3 class="text-xl font-semibold text-gray-100">Summary Reader</h3>
+					<div class="flex items-center space-x-2">
+						<button 
+							id="bionic-toggle"
+							onclick="toggleBionic()"
+							class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded transition-colors duration-200"
+						>
+							Enable Bionic Reading
+						</button>
+						<button 
+							onclick="adjustFontSize(1)"
+							class="bg-gray-600 hover:bg-gray-700 text-white text-sm px-2 py-1 rounded"
+						>
+							A+
+						</button>
+						<button 
+							onclick="adjustFontSize(-1)"
+							class="bg-gray-600 hover:bg-gray-700 text-white text-sm px-2 py-1 rounded"
+						>
+							A-
+						</button>
+					</div>
+				</div>
+				<button 
+					hx-get="/" 
+					hx-target="body" 
+					hx-push-url="true"
+					class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+				>
+					New Summary
+				</button>
+			</div>
 		</div>
-		<div class="markdown-content prose prose-gray max-w-none">
-			@templ.Raw(summary)
+		
+		<!-- Reader Content -->
+		<div class="p-8">
+			<div id="reader-content" class="reader-content">
+				@templ.Raw(summary)
+			</div>
 		</div>
 	</div>
+	
+	<script>
+		let bionicEnabled = false;
+		let currentFontSize = 18;
+		
+		function toggleBionic() {
+			const content = document.getElementById('reader-content');
+			const button = document.getElementById('bionic-toggle');
+			
+			if (!bionicEnabled) {
+				applyBionicText(content);
+				button.textContent = 'Disable Bionic Reading';
+				button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+				button.classList.add('bg-green-600', 'hover:bg-green-700');
+				bionicEnabled = true;
+			} else {
+				removeBionicText(content);
+				button.textContent = 'Enable Bionic Reading';
+				button.classList.remove('bg-green-600', 'hover:bg-green-700');
+				button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+				bionicEnabled = false;
+			}
+		}
+		
+		function applyBionicText(element) {
+			const walker = document.createTreeWalker(
+				element,
+				NodeFilter.SHOW_TEXT,
+				null,
+				false
+			);
+			
+			const textNodes = [];
+			let node;
+			while (node = walker.nextNode()) {
+				if (node.parentElement.tagName !== 'CODE' && node.parentElement.tagName !== 'PRE') {
+					textNodes.push(node);
+				}
+			}
+			
+			textNodes.forEach(textNode => {
+				const text = textNode.textContent;
+				const words = text.split(/(\s+)/);
+				const fragment = document.createDocumentFragment();
+				
+				words.forEach(word => {
+					if (word.trim()) {
+						const span = document.createElement('span');
+						span.className = 'bionic-word';
+						
+						const cleanWord = word.replace(/[^\w]/g, '');
+						if (cleanWord.length > 1) {
+							const bionicLength = Math.max(1, Math.ceil(cleanWord.length * 0.5));
+							const bionicPart = word.substring(0, bionicLength);
+							const normalPart = word.substring(bionicLength);
+							
+							span.innerHTML = `<span class="bionic">${bionicPart}</span><span class="non-bionic">${normalPart}</span>`;
+						} else {
+							span.innerHTML = `<span class="non-bionic">${word}</span>`;
+						}
+						fragment.appendChild(span);
+					} else {
+						fragment.appendChild(document.createTextNode(word));
+					}
+				});
+				
+				textNode.parentNode.replaceChild(fragment, textNode);
+			});
+		}
+		
+		function removeBionicText(element) {
+			const bionicWords = element.querySelectorAll('.bionic-word');
+			bionicWords.forEach(word => {
+				const text = word.textContent;
+				word.parentNode.replaceChild(document.createTextNode(text), word);
+			});
+		}
+		
+		function adjustFontSize(delta) {
+			currentFontSize += delta * 2;
+			currentFontSize = Math.max(12, Math.min(28, currentFontSize));
+			document.getElementById('reader-content').style.fontSize = currentFontSize + 'px';
+		}
+		
+		// Initialize font size
+		document.addEventListener('DOMContentLoaded', function() {
+			document.getElementById('reader-content').style.fontSize = currentFontSize + 'px';
+		});
+	</script>
 }
