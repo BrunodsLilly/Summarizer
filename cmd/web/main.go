@@ -23,6 +23,8 @@ func init() {
 }
 
 func main() {
+	log.Println("Starting web server...")
+	
 	// Get the directory where the executable is located
 	execDir, err := os.Executable()
 	if err != nil {
@@ -48,7 +50,12 @@ func main() {
 	
 	// Check if static directory exists
 	if _, err := os.Stat(staticDir); os.IsNotExist(err) {
-		log.Fatalf("Static directory does not exist: %s", staticDir)
+		log.Printf("Warning: Static directory does not exist: %s", staticDir)
+		log.Printf("Trying current directory as fallback...")
+		staticDir = "./static"
+		if _, err := os.Stat(staticDir); os.IsNotExist(err) {
+			log.Printf("Warning: Fallback static directory also not found: %s", staticDir)
+		}
 	}
 	
 	// Create custom file server with proper MIME types
@@ -88,6 +95,7 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/summarize", summarizeHandler)
 	http.HandleFunc("/test-summary", testSummaryHandler)
+	http.HandleFunc("/health", healthHandler)
 
 	// Get port from environment variable (for Cloud Run) or default to 8080
 	port := os.Getenv("PORT")
@@ -311,3 +319,8 @@ The future of AI is not predetermined—it's a future we're actively creating th
 	}
 }
 
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
+}
