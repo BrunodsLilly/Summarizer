@@ -55,7 +55,7 @@ templ SummaryResult(summary string) {
 	<div class="bg-gray-800 border border-gray-700 rounded-lg shadow-xl mb-8">
 		<!-- Reader Controls -->
 		<div class="reader-controls rounded-t-lg p-4 border-b border-gray-700">
-			<div class="flex items-center justify-between">
+			<div class="flex items-center justify-between mb-3">
 				<div class="flex items-center space-x-4">
 					<h3 class="text-xl font-semibold text-gray-100">Summary Reader</h3>
 					<div class="flex items-center space-x-2">
@@ -89,6 +89,21 @@ templ SummaryResult(summary string) {
 					New Summary
 				</button>
 			</div>
+			
+			<!-- Reading Progress -->
+			<div class="space-y-2">
+				<div class="flex items-center justify-between reading-stats">
+					<div class="flex items-center space-x-4">
+						<span id="word-count">0 words</span>
+						<span id="reading-time">~0 min read</span>
+						<span id="progress-percent">0% complete</span>
+					</div>
+					<span id="time-remaining">~0 min remaining</span>
+				</div>
+				<div class="progress-bar">
+					<div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+				</div>
+			</div>
 		</div>
 		
 		<!-- Reader Content -->
@@ -100,25 +115,149 @@ templ SummaryResult(summary string) {
 	</div>
 	
 	<script>
-		let bionicEnabled = false;
+		(function() {
+			console.log('Initializing reading progress for new summary...');
+			
+			let totalWords = 0;
+			let readingSpeed = 200; // words per minute
+			
+			// Initialize reading progress
+			function initializeReadingProgress() {
+				const content = document.getElementById('reader-content');
+				if (!content) {
+					console.log('Reader content not found');
+					return;
+				}
+				
+				// Calculate word count
+				const text = content.textContent || content.innerText;
+				const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+				totalWords = words.length;
+				
+				console.log('Reading progress initialized:', {
+					contentFound: !!content,
+					textLength: text.length,
+					totalWords: totalWords
+				});
+				
+				if (totalWords === 0) {
+					console.log('No words found in content');
+					return;
+				}
+				
+				// Calculate reading time
+				const totalMinutes = Math.max(1, Math.ceil(totalWords / readingSpeed));
+				
+				// Update UI elements
+				const wordCountEl = document.getElementById('word-count');
+				const readingTimeEl = document.getElementById('reading-time');
+				const timeRemainingEl = document.getElementById('time-remaining');
+				
+				if (wordCountEl) wordCountEl.textContent = `${totalWords.toLocaleString()} words`;
+				if (readingTimeEl) readingTimeEl.textContent = `~${totalMinutes} min read`;
+				if (timeRemainingEl) timeRemainingEl.textContent = `~${totalMinutes} min remaining`;
+				
+				// Set initial font size
+				content.style.fontSize = (window.currentFontSize || 18) + 'px';
+				
+				// Setup scroll tracking
+				setupScrollTracking();
+			}
+			
+			function setupScrollTracking() {
+				const content = document.getElementById('reader-content');
+				const progressFill = document.getElementById('progress-fill');
+				const progressPercent = document.getElementById('progress-percent');
+				const timeRemaining = document.getElementById('time-remaining');
+				
+				if (!content || !progressFill) {
+					console.log('Missing elements for scroll tracking');
+					return;
+				}
+				
+				function updateProgress() {
+					const windowHeight = window.innerHeight;
+					const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+					
+					// Get content position relative to document
+					const contentRect = content.getBoundingClientRect();
+					const contentTop = scrollTop + contentRect.top;
+					const contentHeight = content.offsetHeight;
+					const contentBottom = contentTop + contentHeight;
+					
+					// Calculate progress based on how much content has been scrolled past
+					let progress = 0;
+					
+					if (scrollTop + windowHeight >= contentTop) {
+						// User has reached the content area
+						const viewportBottom = scrollTop + windowHeight;
+						
+						if (viewportBottom >= contentBottom) {
+							// User has scrolled past the entire content
+							progress = 100;
+						} else {
+							// Calculate partial progress
+							const visibleContentHeight = Math.max(0, viewportBottom - contentTop);
+							progress = Math.min(100, (visibleContentHeight / contentHeight) * 100);
+						}
+					}
+					
+					// Update UI elements
+					progressFill.style.width = `${progress}%`;
+					if (progressPercent) progressPercent.textContent = `${Math.round(progress)}% complete`;
+					
+					// Update time remaining
+					const remainingWords = Math.ceil(totalWords * (100 - progress) / 100);
+					const remainingMinutes = Math.max(0, Math.ceil(remainingWords / readingSpeed));
+					if (timeRemaining) {
+						timeRemaining.textContent = remainingMinutes > 0 ? 
+							`~${remainingMinutes} min remaining` : 'Complete!';
+					}
+				}
+				
+				// Throttled scroll listener
+				let ticking = false;
+				function onScroll() {
+					if (!ticking) {
+						requestAnimationFrame(() => {
+							updateProgress();
+							ticking = false;
+						});
+						ticking = true;
+					}
+				}
+				
+				window.addEventListener('scroll', onScroll);
+				window.addEventListener('resize', updateProgress);
+				updateProgress(); // Initial calculation
+				
+				console.log('Scroll tracking setup complete');
+			}
+			
+			// Initialize immediately since content is already loaded
+			initializeReadingProgress();
+		})();
+	</script>
+	
+	<script>
+		// Global reader functions (available to all readers)
 		let currentFontSize = 18;
 		
 		function toggleBionic() {
 			const content = document.getElementById('reader-content');
 			const button = document.getElementById('bionic-toggle');
+			let bionicEnabled = button.textContent.includes('Disable');
 			
 			if (!bionicEnabled) {
 				applyBionicText(content);
 				button.textContent = 'Disable Bionic Reading';
 				button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
 				button.classList.add('bg-green-600', 'hover:bg-green-700');
-				bionicEnabled = true;
 			} else {
 				removeBionicText(content);
 				button.textContent = 'Enable Bionic Reading';
 				button.classList.remove('bg-green-600', 'hover:bg-green-700');
 				button.classList.add('bg-blue-600', 'hover:bg-blue-700');
-				bionicEnabled = false;
 			}
 		}
 		
@@ -179,12 +318,10 @@ templ SummaryResult(summary string) {
 		function adjustFontSize(delta) {
 			currentFontSize += delta * 2;
 			currentFontSize = Math.max(12, Math.min(28, currentFontSize));
-			document.getElementById('reader-content').style.fontSize = currentFontSize + 'px';
+			const content = document.getElementById('reader-content');
+			if (content) {
+				content.style.fontSize = currentFontSize + 'px';
+			}
 		}
-		
-		// Initialize font size
-		document.addEventListener('DOMContentLoaded', function() {
-			document.getElementById('reader-content').style.fontSize = currentFontSize + 'px';
-		});
 	</script>
 }

@@ -44,6 +44,26 @@ templ Layout(title string) {
 				backdrop-filter: blur(10px);
 				border: 1px solid rgba(75, 85, 99, 0.3);
 			}
+			
+			/* Progress bar styles */
+			.progress-bar {
+				height: 4px;
+				background: rgba(75, 85, 99, 0.3);
+				border-radius: 2px;
+				overflow: hidden;
+			}
+			
+			.progress-fill {
+				height: 100%;
+				background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+				transition: width 0.2s ease-out;
+				border-radius: 2px;
+			}
+			
+			.reading-stats {
+				font-size: 0.75rem;
+				color: #9ca3af;
+			}
 		</style>
 	</head>
 	<body class="bg-gray-900 text-gray-100 min-h-screen">
