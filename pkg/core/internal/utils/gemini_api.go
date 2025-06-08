@@ -15,6 +15,8 @@ const (
 	// Model name
 	// ModelName = "gemini-2.0-flash-001"
 	ModelName = "gemini-2.5-pro-preview-05-06"
+	// MaxOutputTokens
+	MaxOutputTokens = 128_000
 )
 
 func main() {
@@ -66,7 +68,7 @@ func GenerateWithYTVideoAndModel(url, modelName, apiVersion string) (string, err
 
 	contents := []*genai.Content{
 		{Parts: []*genai.Part{
-			{Text: "Write a short summary of the video using Markdown. Be as information dense as possible. Be thorough. Use bullet lists to break down complex ideas. Provide space between sections. Produce an overall summary, then clearly identify video sections and summarize them. Finally, add a thoughtful critique of the video. Then include a 'Further Reading' section that connects ideas, expands on them, and provide further information with links."},
+			{Text: "Write a short summary of the video using Markdown. Be as information dense as possible. Be thorough. Use bullet lists to break down complex ideas. Provide space between sections. Produce an overall summary, list key sections to listen to, then add a thoughtful critique of the video. Then include a 'Further Reading' section that connects ideas, expands on them, and provide further information with links."},
 			{FileData: &genai.FileData{
 				FileURI:  url,
 				MIMEType: "video/mp4",
@@ -74,7 +76,16 @@ func GenerateWithYTVideoAndModel(url, modelName, apiVersion string) (string, err
 		}},
 	}
 
-	resp, err := client.Models.GenerateContent(ctx, modelName, contents, nil)
+	config := genai.GenerateContentConfig{
+		MaxOutputTokens: MaxOutputTokens,
+		SystemInstruction: &genai.Content{
+			Parts: []*genai.Part{
+				{Text: fmt.Sprintf("Keep your answer below %d tokens.", MaxOutputTokens)},
+			},
+		},
+	}
+
+	resp, err := client.Models.GenerateContent(ctx, modelName, contents, &config)
 	if err != nil {
 		return "", fmt.Errorf("failed to generate content: %w", err)
 	}
@@ -83,4 +94,3 @@ func GenerateWithYTVideoAndModel(url, modelName, apiVersion string) (string, err
 
 	return respText, nil
 }
-
